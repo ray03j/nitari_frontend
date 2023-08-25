@@ -3,7 +3,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Label } from "../atoms/Label";
 import { TaskText } from "../atoms/TaskText";
 
-type CardProps = {
+export type CardProps = {
   taskName: string;
   taskDescription: string;
   startDate: string;
