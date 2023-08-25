@@ -15,7 +15,7 @@ export const Card: React.FC<CardProps> = ({ taskName, taskDescription, dueDate, 
   return (
     <>
     <Label>たすく</Label>
-    <TaskText>{taskName}</TaskText>
+    <div>{taskName}</div>
     
     <Label>たすくのせつめい</Label>
     <TaskText>{taskDescription}</TaskText>

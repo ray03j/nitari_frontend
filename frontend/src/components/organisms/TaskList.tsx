@@ -14,10 +14,10 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
     {Tasks.map((task, index) => (
       <div key={index}>
         <Card
-          taskName=""
-          taskDescription=""
-          startDate=""
-          dueDate=""
+          taskName={task.taskName}
+          taskDescription={task.taskDescription}
+          startDate={task.startDate}
+          dueDate={task.dueDate}
           />
       </div>
     ))}
