@@ -24,7 +24,7 @@ export type DescriptionProps = {
   title: string;
   description: string;
   startDate: string;
-  limitDate: string; // 08/24/2023 21:19:49 yyyy-mm-dd
+  limitDate: string; 
   createdAt: string;
 };
 
@@ -42,7 +42,7 @@ function App(): JSX.Element {
 
 
   useEffect(() => {
-    liff.init({liffId: 'YOUR_LIFF_ID'})
+    liff.init({liffId: '2000520603-Nnz176bY'})
       .then(() =>{
         if (liff.isLoggedIn()){
           handleLoggedIn()
@@ -127,24 +127,40 @@ function App(): JSX.Element {
       const day = parseInt(match[3]);
       const hour = parseInt(match[4]);
       const minute = parseInt(match[5]);
-
-      const convertedDate = new Date(year, month, day, hour, minute, 0);
-      return convertedDate.toISOString();
+      try {
+        const convertedDate = new Date(year, month, day, hour, minute, 0);
+        console.log(convertedDate)
+        return convertedDate.toISOString();
+      } catch (error) {
+        console.error("Date conversion error:", error)
+        return null
+      }
     } else {
       return null;
     }
   }
 
   const convertDateToISOString = () => {
-    const newStartDate = convertToISOString(inputText.startDate)
-    const newLimitDate = convertToISOString(inputText.limitDate)
-    const newSettingDateInputText = {
-      ...inputText,
-      newStartDate,
-      newLimitDate
+    try{
+      const newStartDate = convertToISOString(inputText.startDate)
+      const newLimitDate = convertToISOString(inputText.limitDate)
+      
+      if(newStartDate === null || newLimitDate === null){
+        console.error("Date conversion failed for at least one date.")
+      }
+      
+      const newSettingDateInputText = {
+        ...inputText,
+        newStartDate,
+        newLimitDate
+      }
+
+      setInputText(newSettingDateInputText);
+    } catch(error) {
+      console.error("An error occurred", error)
     }
-    setInputText(newSettingDateInputText)
-  }
+  } 
+  
 
   const handleSubmit = () => {
     getCurrentDateTime()
@@ -164,6 +180,7 @@ function App(): JSX.Element {
       createdAt: ""
     })
   }
+  
   const images = [
     "image1.png",
     "image2.png",
@@ -199,14 +216,14 @@ function App(): JSX.Element {
               <Label>煮込みはじめ日</Label>
             
               <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
-              <Label>(例: 2022/8/21,21:10)</Label>
+              <Label>(例: 2023/9/20,12:10)</Label>
               <br/>
             </div>
 
             <div className='form-flex'>
               <Label>煮込みすぎ日</Label>
               <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
-              <Label>(例: 2022/8/21,21:10)</Label>
+              <Label>(例: 2023/9/22,21:10)</Label>
             </div>
             <div>
               <Button type='submit' onClick={handleSubmit}>Submit</Button>
