@@ -57,11 +57,11 @@ function App() {
       const idToken = await liff.getIDToken();
       console.log('ID Token', idToken)
 
-      const newInputText = {
+      const newAccessInputText = {
         ...inputText,
         accessToken: idToken
       }
-      setInputText(newInputText)
+      setInputText(newAccessInputText)
     }
     const handleNotLoggedIn = async () =>{
       console.log("not logged in")
@@ -106,14 +106,61 @@ function App() {
     })
   }
 
+  const getCurrentDateTime = () =>{
+    const date = new Date()
+    const formattedDate = date.toISOString();
+    const newCreatedAtInputText = {
+      ...inputText,
+      createdAt: formattedDate 
+    }
+    setInputText(newCreatedAtInputText)
+  }
+
+  const convertToISOString = (input: string):string | null => {
+    const dateRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2}),(\d{1,2}):(\d{1,2})$/;
+    const match = input.match(dateRegex);
+
+    if (match) {
+      const year = parseInt(match[1]);
+      const month = parseInt(match[2]) - 1; // JavaScriptのDateでは0から11で月を表現
+      const day = parseInt(match[3]);
+      const hour = parseInt(match[4]);
+      const minute = parseInt(match[5]);
+
+      const convertedDate = new Date(year, month, day, hour, minute, 0);
+      return convertedDate.toISOString();
+    } else {
+      return null;
+    }
+  }
+
+  const convertDateToISOString = () => {
+    const newStartDate = convertToISOString(inputText.startDate)
+    const newLimitDate = convertToISOString(inputText.limitDate)
+    const newSettingDateInputText = {
+      ...inputText,
+      newStartDate,
+      newLimitDate
+    }
+    setInputText(newSettingDateInputText)
+  }
+
   const handleSubmit = () => {
+    getCurrentDateTime()
+    convertDateToISOString()
+
     axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
+    // if(inputText.accessToken)
+    //   localStorage.setItem("submitInfo",inputText.accessToken)
+    // localStorage.setItem("submitInfo",inputText.title)
+
     setInputText({
       ...inputText,
       title: "",
       description: "",
       startDate: "",
-      limitDate: ""
+      limitDate: "",
+      createdAt: ""
     })
   }
 
@@ -142,13 +189,16 @@ function App() {
 
             <div className='form-flex'>
               <Label>煮込みはじめ日</Label>
+            
               <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
+              <Label>(例: 2022/8/21,21:10)</Label>
               <br/>
             </div>
 
             <div className='form-flex'>
               <Label>煮込みすぎ日</Label>
               <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
+              <Label>(例: 2022/8/21,21:10)</Label>
             </div>
             <div>
               <Button type='submit' onClick={handleSubmit}>Submit</Button>
