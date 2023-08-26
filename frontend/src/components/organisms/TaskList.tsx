@@ -1,5 +1,4 @@
 import React from "react";
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Card, CardProps } from "../molecules/Card";
 
 type TaskListProps = {
@@ -15,10 +14,9 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
     {Tasks.map((task, index) => (
       <div key={index}>
         <Card
-          taskName={task.taskName}
-          taskDescription={task.taskDescription}
+          title={task.title}
           startDate={task.startDate}
-          dueDate={task.dueDate}
+          limitDate={task.limitDate}
           />
       </div>
     ))}
