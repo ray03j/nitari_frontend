@@ -5,6 +5,7 @@ import nabe from './images/nabe.jpg'
 import './App.css';
 import Button from './components/atoms/Button';
 import { TaskList } from './components/organisms/TaskList';
+import { TaskNameList } from './components/organisms/TaskNameList';
 import { ModalContainer } from './components/molecules/ModalContainer';
 import { Input } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
@@ -105,6 +106,7 @@ function App(): JSX.Element {
 
           </ModalContainer>
       <div>
+        <TaskNameList TaskNames={TaskArray}/>
         <TaskList Tasks={TaskArray} />
 
       </div>

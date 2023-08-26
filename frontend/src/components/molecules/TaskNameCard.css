@@ -1,0 +1,13 @@
+.taskNameCard{
+    border: 1px solid #ccc;
+    width: 80vw;
+    padding: 10px;
+    margin: 8px auto;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+
+
+
