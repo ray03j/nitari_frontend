@@ -69,13 +69,13 @@ function App(): JSX.Element {
   return (
     <div className='App'>
       <h1 className='AppName'>煮たりないたすく</h1>
-        <div className='absolute food-img'>
+        <div className='absolute'>
           <Slideshow images={images} />
         </div>
         <div>
           <img className="NabeImg" src={nabe} alt="nabe" />
         </div>
-          <Button onClick={openModal}>追加</Button>
+          <Button className = "" onClick={openModal}>追加</Button>
           
           <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
           <div className="modal-flex">  

@@ -7,24 +7,26 @@
     transform: translateY(-20%);
   }
   
-.food-img {
+/* .food-img {
     max-width: none;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-  }
+    max-height:min-content;
+  } */
 
   .relative {
     position: relative;
   }
 
   .absolute{
+    max-width: none;
     position: absolute;
     display: flex;
-    align-items: center;
     justify-content: center;
     text-align: center;
+    max-height: 250px;
   }
   
   button {
@@ -37,4 +39,3 @@
     font-size: 16px;
     border-radius: 5px;
   }
-  
