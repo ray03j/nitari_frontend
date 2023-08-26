@@ -1,17 +1,42 @@
-.slideshow-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.slideshow-container img {
-  max-width: 100%;
-  height: auto;
-}
+.slideshow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px;
+    transform: translateY(-20%);
+  }
+  
+/* .food-img {
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-height:min-content;
+  } */
 
-.slideshow-container button {
-  background-color: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
+  .relative {
+    position: relative;
+  }
+
+  .absolute{
+    max-width: none;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    max-height: 250px;
+  }
+  
+  button {
+    background-color:darkorange;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }

@@ -10,6 +10,7 @@ import { Input } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
 import { ModalContainer } from './components/molecules/ModalContainer';
 import { TaskList } from './components/organisms/TaskList';
+import Slideshow from './components/molecules/Slideshow';
 
 export type InputValueProps = {
   title: string;
@@ -28,7 +29,7 @@ export type DescriptionProps = {
 };
 
 
-function App() {
+function App(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
@@ -38,6 +39,7 @@ function App() {
     limitDate: "",
     createdAt: ""
   })
+
 
   useEffect(() => {
     liff.init({liffId: 'YOUR_LIFF_ID'})
@@ -51,25 +53,24 @@ function App() {
       .catch((error) => {
         console.error('LIFF initialization failed:', error);
       })
-    },[])
+  },[])
 
-    const handleLoggedIn = async () =>{
-      const idToken = await liff.getIDToken();
-      console.log('ID Token', idToken)
+  const handleLoggedIn = async () =>{
+    const idToken = await liff.getIDToken();
+    console.log('ID Token', idToken)
 
-      const newAccessInputText = {
-        ...inputText,
-        accessToken: idToken
-      }
-      setInputText(newAccessInputText)
+    const newAccessInputText = {
+      ...inputText,
+      accessToken: idToken
     }
-    const handleNotLoggedIn = async () =>{
-      console.log("not logged in")
-    }
+    setInputText(newAccessInputText)
+  }
 
+  const handleNotLoggedIn = async () =>{
+    console.log("not logged in")
+  }
 
-
-    const TaskArray: InputValueProps[] = [
+  const TaskArray: InputValueProps[] = [
     {
       title: "ごはんつくる",
       description: "納豆キムチご飯以外で",
@@ -163,15 +164,22 @@ function App() {
       createdAt: ""
     })
   }
+  const images = [
+    "image1.png",
+    "image2.png",
+    "image3.png"
+  ];
 
   return (
     <div className='App'>
-      <div className="AppName">煮たりないタスク</div>
-      <div>
-        <img className="NabeImg" src={nabe} alt="nabe" />
-      </div>
-
-          <Button onClick={openModal}>追加</Button>
+      <h1 className='AppName'>煮たりないたすく</h1>
+        <div className='absolute'>
+          <Slideshow images={images} />
+        </div>
+        <div>
+          <img className="NabeImg" src={nabe} alt="nabe" />
+        </div>
+          <Button className = "" onClick={openModal}>追加</Button>
           
           <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
           <div className="modal-flex">  
