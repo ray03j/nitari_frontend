@@ -70,8 +70,11 @@ function App(): JSX.Element {
     <div className='App'>
       <div className="AppName">煮たりないタスク</div>
       <div>
-        <Slideshow images={images} />
-        <img className="NabeImg" src={nabe} alt="nabe" />
+        <div className='absolute'>
+          <Slideshow images={images} />
+        </div>
+          <img className="NabeImg" src={nabe} alt="nabe" />
+        
       </div>
 
           <Button onClick={openModal}>追加</Button>
