@@ -68,15 +68,13 @@ function App(): JSX.Element {
 
   return (
     <div className='App'>
-      <div className="AppName">煮たりないタスク</div>
-      <div>
-        <div className='absolute'>
+      <h1 className='AppName'>煮たりないたすく</h1>
+        <div className='absolute food-img'>
           <Slideshow images={images} />
         </div>
+        <div>
           <img className="NabeImg" src={nabe} alt="nabe" />
-        
-      </div>
-
+        </div>
           <Button onClick={openModal}>追加</Button>
           
           <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
