@@ -33,7 +33,7 @@ function App(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
-    title: "",
+    title: "t",
     description: "",
     startDate: "",
     limitDate: "",
