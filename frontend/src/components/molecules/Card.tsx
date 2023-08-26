@@ -1,5 +1,4 @@
 import React from "react";
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Label } from "../atoms/Label";
 import { TaskText } from "../atoms/TaskText";
 import "./Card.css";
