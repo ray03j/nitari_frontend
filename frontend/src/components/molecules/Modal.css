@@ -38,3 +38,11 @@
 .close-button:hover {
   background-color: #ddd;
 }
+
+.empty{
+  width: 300vw;
+}
+
+.close-flex{
+  display: flex;
+}

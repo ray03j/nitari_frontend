@@ -14,8 +14,11 @@ export const ModalContainer = ({ isOpen, onClose, children }: ModalProps) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
+        <div className="close-flex">
+          <div className="empty"></div>
+          <button onClick={onClose}>×</button>
+        </div>
         {children}
-        <Button onClick={onClose}>Close</Button>
       </div>
     </div>
   );

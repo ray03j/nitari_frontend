@@ -230,7 +230,7 @@ function App(): JSX.Element {
               <Label>(例: 2023/9/22,21:10)</Label>
             </div>
             <div>
-              <Button type='submit' onClick={handleSubmit}>Submit</Button>
+              <Button type='submit' onClick={handleSubmit}>追加</Button>
             </div>
           </div>
 
