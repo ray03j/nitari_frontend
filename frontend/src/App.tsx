@@ -6,10 +6,9 @@ import './App.css';
 import Button from './components/atoms/Button';
 import { TaskList } from './components/organisms/TaskList';
 import { ModalContainer } from './components/molecules/ModalContainer';
-import { Input, InputProps } from './components/atoms/Input';
+import { Input } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
-import { TaskText } from './components/atoms/TaskText';
-
+import './components/molecules/Modal.css'
 
 function App() {
 
@@ -50,8 +49,12 @@ function App() {
     setIsModalOpen(false)
   }
 
-  const handleInputChange = (e:string) => {
-    
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const {name, value} = e.target
+    // setInputText((prevInputText) => ({
+    //   ...prevInputText,
+    //   [name]: value,
+    // }))
   }
 
   return (
@@ -61,21 +64,21 @@ function App() {
         <img className="NabeImg" src={nabe} alt="nabe" />
       </div>
 
+          <Button onClick={openModal}>追加</Button>
+          
           <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
               <Label>たすく</Label>
-              <Input type="string" value={inputText.taskName} onChange={handleInputChange} />
+              <Input type="string" value={inputText.taskName} onChange={(e) => handleInputChange} />
         
               <Label>たすくのせつめい</Label>
-              <Input type="string" value={inputText.taskDescription} onChange={handleInputChange} />
+              <Input type="string" value={inputText.taskDescription} onChange={(e) => handleInputChange} />
         
               <Label>煮込みはじめ日</Label>
-              <Input type="string" value={inputText.startDate} onChange={handleInputChange} />
+              <Input type="string" value={inputText.startDate} onChange={(e) => handleInputChange} />
         
               <Label>煮込みすぎ日</Label>
-              <Input type="string" value={inputText.dueDate} onChange={handleInputChange} />
+              <Input type="string" value={inputText.dueDate} onChange={(e) => handleInputChange} />
           </ModalContainer>
-          <Button>追加</Button>
-          
       <div>
         <TaskList Tasks={TaskArray} />
 
