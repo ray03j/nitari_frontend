@@ -16,4 +16,16 @@
 .Task_date{
     font-size: 12px;
     margin-top: 5px;
+    display: flex;
+}
+
+.start {
+    width: 45%;
+}
+
+.childa {
+    width: 10%;
+}
+.limit {
+    width: 45%;
 }

@@ -15,15 +15,19 @@ export const Card: React.FC<CardProps> = ({ title, startDate, limitDate = 'text'
     <div className = "card">
       
       <div className="Task">
-        <Label>たすく</Label>
         <div>{title}</div>
       </div>
 
-      <div className="Task_date"> <Label>煮込みはじめ日</Label>
-        <TaskText>{startDate}</TaskText>
-
-        <Label>煮込みすぎ日</Label>
-        <TaskText>{limitDate}</TaskText>
+      <div className="Task_date">
+        <div className="start">
+          <Label>煮込みはじめ日</Label>
+          <TaskText>{startDate}</TaskText>
+        </div>
+        <div className="childa">～</div>
+        <div className="limit">
+          <Label>煮込みすぎ日</Label>
+          <TaskText>{limitDate}</TaskText>
+        </div>
       </div> 
     </div>
   );
