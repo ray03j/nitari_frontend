@@ -1,5 +1,6 @@
 import React from "react";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import Button from "../atoms/Button";
 import './Modal.css';
 
 type ModalProps = {
@@ -15,7 +16,7 @@ export const ModalContainer = ({ isOpen, onClose, children }: ModalProps) => {
     <div className="modal-overlay">
       <div className="modal-content">
         {children}
-        <button className="close-button" onClick={onClose}>Close</button>
+        <Button className="close-button" onClick={onClose}>Close</Button>
       </div>
     </div>
   );
