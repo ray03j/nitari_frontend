@@ -9,8 +9,12 @@ import { ModalContainer } from './components/molecules/ModalContainer';
 import { Input } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
 import './components/molecules/Modal.css'
+import Slideshow from './components/molecules/Slideshow';
+// import image1 from './images/image1.png'
+// import image2 from './images/image2.png'
+// import image3 from './images/image3.png'
 
-function App() {
+function App(): JSX.Element {
 
   const TaskArray: CardProps[] = [
     {
@@ -56,11 +60,17 @@ function App() {
     //   [name]: value,
     // }))
   }
+  const images = [
+    "image1.png",
+    "image2.png",
+    "image3.png"
+  ];
 
   return (
     <div className='App'>
       <div className="AppName">煮たりないタスク</div>
       <div>
+        <Slideshow images={images} />
         <img className="NabeImg" src={nabe} alt="nabe" />
       </div>
 
