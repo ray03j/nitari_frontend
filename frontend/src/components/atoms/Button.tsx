@@ -1,15 +1,9 @@
 import './Button.css'
-import React from 'react';
+import React, { ComponentPropsWithRef } from 'react';
 
-type ButtonProps = {
-  onClick?: (e: React.MouseEvent) => void;
-  className?: string;
-  children: React.ReactNode;
-};
-
-const Button = ({ children }: ButtonProps) => {
+const Button = ({ children, className, ...props }: ComponentPropsWithRef<"button">) => {
   return (
-    <button className="Button">{children}</button>
+    <button className="Button" {...props}>{children}</button>
   );
 };
 

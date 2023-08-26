@@ -9,7 +9,7 @@ type ModalProps = {
 };
 
 export const ModalContainer = ({ isOpen, onClose, children }: ModalProps) => {
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   return (
     <div className="modal-overlay">
