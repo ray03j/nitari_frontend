@@ -1,0 +1,17 @@
+.slideshow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slideshow-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.slideshow-container button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}

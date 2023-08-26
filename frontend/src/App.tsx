@@ -49,12 +49,20 @@ function App() {
     setIsModalOpen(false)
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const {name, value} = e.target
-    // setInputText((prevInputText) => ({
-    //   ...prevInputText,
-    //   [name]: value,
-    // }))
+  const handleInputChange = (input: keyof CardProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText({
+      ...inputText, [input]: e.target.value ,
+    })
+  }
+
+  const handleSubmit = () => {
+    
+    setInputText({
+      taskName: "",
+      taskDescription: "",
+      startDate: "",
+      dueDate: ""
+    })
   }
 
   return (
@@ -70,25 +78,28 @@ function App() {
           <div className="modal-flex">  
             <div className='form-flex'>
               <Label>たすく</Label>
-              <Input type="string" value={inputText.taskName} onChange={(e) => handleInputChange} />
+              <Input type="string" value={inputText.taskName} onChange={handleInputChange('taskName')} />
               <br/>
             </div>
 
             <div className='form-flex'>
               <Label>たすくのせつめい</Label>
-              <Input type="string" value={inputText.taskDescription} onChange={(e) => handleInputChange} />
+              <Input type="string" value={inputText.taskDescription} onChange={handleInputChange('taskDescription')} />
               <br/>
             </div>
 
             <div className='form-flex'>
               <Label>煮込みはじめ日</Label>
-              <Input type="string" value={inputText.startDate} onChange={(e) => handleInputChange} />
+              <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
               <br/>
             </div>
 
             <div className='form-flex'>
               <Label>煮込みすぎ日</Label>
-              <Input type="string" value={inputText.dueDate} onChange={(e) => handleInputChange} />
+              <Input type="string" value={inputText.dueDate} onChange={handleInputChange('dueDate')} />
+            </div>
+            <div>
+              <Button type='submit' onClick={handleSubmit}>Submit</Button>
             </div>
           </div>
 
