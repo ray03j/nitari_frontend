@@ -5,7 +5,7 @@ import nabe from './images/nabe.jpg'
 import './App.css';
 import Button from './components/atoms/Button';
 import { TaskList } from './components/organisms/TaskList';
-import { Modal, ModalContainer } from './components/molecules/ModalContainer';
+import { ModalContainer } from './components/molecules/ModalContainer';
 import { Input, InputProps } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
 import { TaskText } from './components/atoms/TaskText';
