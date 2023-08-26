@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import './components/molecules/Modal.css'
 import nabe from './images/nabe.jpg'
+import liff from '@line/liff'
 
 import Button from './components/atoms/Button';
 import { Input } from './components/atoms/Input';
@@ -18,7 +19,7 @@ export type InputValueProps = {
 };
 
 export type DescriptionProps = {
-  accesstoken: string;
+  accessToken: string | null;
   title: string;
   description: string;
   startDate: string;
@@ -26,9 +27,49 @@ export type DescriptionProps = {
   createdAt: string;
 };
 
-function App() {
 
-  const TaskArray: InputValueProps[] = [
+function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inputText, setInputText] = useState<DescriptionProps>({
+    accessToken: "",
+    title: "",
+    description: "",
+    startDate: "",
+    limitDate: "",
+    createdAt: ""
+  })
+
+  useEffect(() => {
+    liff.init({liffId: 'YOUR_LIFF_ID'})
+      .then(() =>{
+        if (liff.isLoggedIn()){
+          handleLoggedIn()
+        } else {
+          handleNotLoggedIn()
+        }
+      })
+      .catch((error) => {
+        console.error('LIFF initialization failed:', error);
+      })
+    },[])
+
+    const handleLoggedIn = async () =>{
+      const idToken = await liff.getIDToken();
+      console.log('ID Token', idToken)
+
+      const newInputText = {
+        ...inputText,
+        accessToken: idToken
+      }
+      setInputText(newInputText)
+    }
+    const handleNotLoggedIn = async () =>{
+      console.log("not logged in")
+    }
+
+
+
+    const TaskArray: InputValueProps[] = [
     {
       title: "ごはんつくる",
       description: "納豆キムチご飯以外で",
@@ -49,13 +90,7 @@ function App() {
     }
   ]
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputText, setInputText] = useState<InputValueProps>({
-    title: "",
-    description: "",
-    startDate: "",
-    limitDate: ""
-  })
+
 
   const openModal = () => {
     setIsModalOpen(true)
@@ -65,7 +100,7 @@ function App() {
     setIsModalOpen(false)
   }
 
-  const handleInputChange = (input: keyof InputValueProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (input: keyof DescriptionProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText({
       ...inputText, [input]: e.target.value ,
     })
