@@ -2,6 +2,7 @@ import React from "react";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Label } from "../atoms/Label";
 import { TaskText } from "../atoms/TaskText";
+import "./Card.css";
 
 export type CardProps = {
   taskName: string;
@@ -13,18 +14,19 @@ export type CardProps = {
 export const Card: React.FC<CardProps> = ({ taskName, taskDescription, dueDate, startDate = 'text' }) => {
 
   return (
-    <>
-    <Label>たすく</Label>
-    <div>{taskName}</div>
-    
-    <Label>たすくのせつめい</Label>
-    <TaskText>{taskDescription}</TaskText>
+    <div className = "card">
+      
+      <div className="Task">
+        <Label>たすく</Label>
+        <div>{taskName}</div>
+      </div>
 
-    <Label>煮込みはじめ日</Label>
-    <TaskText>{startDate}</TaskText>
+      <div className="Task_date"> <Label>煮込みはじめ日</Label>
+        <TaskText>{startDate}</TaskText>
 
-    <Label>煮込みすぎ日</Label>
-    <TaskText>{dueDate}</TaskText>
-    </>
+        <Label>煮込みすぎ日</Label>
+        <TaskText>{dueDate}</TaskText>
+      </div> 
+    </div>
   );
 };
