@@ -1,7 +1,7 @@
 import React from "react";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 
-type InputProps = {
+export type InputProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
