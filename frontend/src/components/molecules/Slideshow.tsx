@@ -19,9 +19,9 @@ const Slideshow: React.FC<SlideshowProps> = ({ images }) => {
 
   return (
     <div className="slideshow">
-      <button onClick={prevSlide}>Previous</button>
+      <button onClick={prevSlide}>&#60;</button>
       <img src={'/' + images[currentSlide]} alt={`Slide ${currentSlide}`} />
-      <button onClick={nextSlide}>Next</button>
+      <button onClick={nextSlide}>&#62;</button>
     </div>
   );
 };
