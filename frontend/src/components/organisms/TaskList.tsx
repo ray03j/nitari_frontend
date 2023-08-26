@@ -43,7 +43,7 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
     {Tasks.map((task, index) => (
       <div key={index}>
         <Card
-          onClick={openContentModal}
+          onOpen={openContentModal}
           title={task.title}
           startDate={task.startDate}
           limitDate={task.limitDate}

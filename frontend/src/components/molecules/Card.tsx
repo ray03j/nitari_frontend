@@ -2,15 +2,16 @@ import React from "react";
 import { Label } from "../atoms/Label";
 import { TaskText } from "../atoms/TaskText";
 import "./Card.css";
+import Button from "../atoms/Button";
 
 export type CardProps = {
-  onClick?: () => void;
+  onOpen?: () => void;
   title: string;
   startDate: string;
   limitDate: string;  
 };
 
-export const Card: React.FC<CardProps> = ({ title, startDate, limitDate = 'text' }) => {
+export const Card: React.FC<CardProps> = ({onOpen, title, startDate, limitDate }: CardProps) => {
 
   return (
     <div className = "card">
@@ -30,6 +31,7 @@ export const Card: React.FC<CardProps> = ({ title, startDate, limitDate = 'text'
           <TaskText>{limitDate}</TaskText>
         </div>
       </div> 
+        <Button onClick={onOpen}>開く</Button>
     </div>
   );
 };
