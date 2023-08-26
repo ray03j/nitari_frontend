@@ -67,17 +67,31 @@ function App() {
           <Button onClick={openModal}>追加</Button>
           
           <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
+          <div className="modal-flex">  
+            <div className='form-flex'>
               <Label>たすく</Label>
               <Input type="string" value={inputText.taskName} onChange={(e) => handleInputChange} />
-        
+              <br/>
+            </div>
+
+            <div className='form-flex'>
               <Label>たすくのせつめい</Label>
               <Input type="string" value={inputText.taskDescription} onChange={(e) => handleInputChange} />
-        
+              <br/>
+            </div>
+
+            <div className='form-flex'>
               <Label>煮込みはじめ日</Label>
               <Input type="string" value={inputText.startDate} onChange={(e) => handleInputChange} />
-        
+              <br/>
+            </div>
+
+            <div className='form-flex'>
               <Label>煮込みすぎ日</Label>
               <Input type="string" value={inputText.dueDate} onChange={(e) => handleInputChange} />
+            </div>
+          </div>
+
           </ModalContainer>
       <div>
         <TaskList Tasks={TaskArray} />
