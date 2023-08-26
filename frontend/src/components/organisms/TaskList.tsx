@@ -14,10 +14,9 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
     {Tasks.map((task, index) => (
       <div key={index}>
         <Card
-          taskName={task.taskName}
-          taskDescription={task.taskDescription}
+          title={task.title}
           startDate={task.startDate}
-          dueDate={task.dueDate}
+          limitDate={task.limitDate}
           />
       </div>
     ))}

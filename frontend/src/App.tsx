@@ -1,44 +1,60 @@
 import React, { useState } from 'react';
-import { CardProps } from "./components/molecules/Card";
-
-import nabe from './images/nabe.jpg'
+import axios from 'axios';
 import './App.css';
+import './components/molecules/Modal.css'
+import nabe from './images/nabe.jpg'
+
 import Button from './components/atoms/Button';
-import { TaskList } from './components/organisms/TaskList';
-import { ModalContainer } from './components/molecules/ModalContainer';
 import { Input } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
-import './components/molecules/Modal.css'
+import { ModalContainer } from './components/molecules/ModalContainer';
+import { TaskList } from './components/organisms/TaskList';
+
+export type InputValueProps = {
+  title: string;
+  description: string;
+  startDate: string;
+  limitDate: string; // 08/24/2023 21:19:49 yyyy-mm-dd
+};
+
+export type DescriptionProps = {
+  accesstoken: string;
+  title: string;
+  description: string;
+  startDate: string;
+  limitDate: string; // 08/24/2023 21:19:49 yyyy-mm-dd
+  createdAt: string;
+};
 
 function App() {
 
-  const TaskArray: CardProps[] = [
+  const TaskArray: InputValueProps[] = [
     {
-      taskName: "ごはんつくる",
-      taskDescription: "納豆キムチご飯以外で",
+      title: "ごはんつくる",
+      description: "納豆キムチご飯以外で",
       startDate: "08/24/2023 21:19:49",
-      dueDate: "08/24/2023 21:19:49"
+      limitDate: "08/24/2023 21:19:49"
     },
     {
-      taskName: "ご飯食べる",
-      taskDescription: "納豆キムチご飯以外で",
+      title: "ご飯食べる",
+      description: "納豆キムチご飯以外で",
       startDate: "08/24/2023 21:19:49",
-      dueDate: "08/24/2023 21:19:49"
+      limitDate: "08/24/2023 21:19:49"
     },
     {
-      taskName: "お皿あらう",
-      taskDescription: "納豆キムチご飯以外で",
+      title: "お皿あらう",
+      description: "納豆キムチご飯以外で",
       startDate: "08/24/2023 21:19:49",
-      dueDate: "08/24/2023 21:19:49"
+      limitDate: "08/24/2023 21:19:49"
     }
   ]
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputText, setInputText] = useState<CardProps>({
-    taskName: "",
-    taskDescription: "",
+  const [inputText, setInputText] = useState<InputValueProps>({
+    title: "",
+    description: "",
     startDate: "",
-    dueDate: ""
+    limitDate: ""
   })
 
   const openModal = () => {
@@ -49,19 +65,20 @@ function App() {
     setIsModalOpen(false)
   }
 
-  const handleInputChange = (input: keyof CardProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (input: keyof InputValueProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText({
       ...inputText, [input]: e.target.value ,
     })
   }
 
   const handleSubmit = () => {
-    
+    axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
     setInputText({
-      taskName: "",
-      taskDescription: "",
+      ...inputText,
+      title: "",
+      description: "",
       startDate: "",
-      dueDate: ""
+      limitDate: ""
     })
   }
 
@@ -78,13 +95,13 @@ function App() {
           <div className="modal-flex">  
             <div className='form-flex'>
               <Label>たすく</Label>
-              <Input type="string" value={inputText.taskName} onChange={handleInputChange('taskName')} />
+              <Input type="string" value={inputText.title} onChange={handleInputChange('title')} />
               <br/>
             </div>
 
             <div className='form-flex'>
               <Label>たすくのせつめい</Label>
-              <Input type="string" value={inputText.taskDescription} onChange={handleInputChange('taskDescription')} />
+              <Input type="string" value={inputText.description} onChange={handleInputChange('description')} />
               <br/>
             </div>
 
@@ -96,7 +113,7 @@ function App() {
 
             <div className='form-flex'>
               <Label>煮込みすぎ日</Label>
-              <Input type="string" value={inputText.dueDate} onChange={handleInputChange('dueDate')} />
+              <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
             </div>
             <div>
               <Button type='submit' onClick={handleSubmit}>Submit</Button>
