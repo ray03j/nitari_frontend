@@ -200,7 +200,10 @@ function App(): JSX.Element {
     publishIdToken()
     getCurrentDateTime()
     convertDateToISOString()
-
+    
+    if (!inputText.title || !inputText.startDate || !inputText.limitDate) {
+      alert('必須項目を入力してください。');
+    }
 
     try{
       if(!inputText.accessToken) console.log("access token is null")
