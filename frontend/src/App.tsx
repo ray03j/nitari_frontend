@@ -6,6 +6,10 @@ import nabe from './images/nabe.jpg'
 import liff from '@line/liff'
 
 import Button from './components/atoms/Button';
+
+
+import { TaskNameList } from './components/organisms/TaskNameList';
+
 import { Input } from './components/atoms/Input';
 import { Label } from './components/atoms/Label';
 import { ModalContainer } from './components/molecules/ModalContainer';
@@ -236,13 +240,9 @@ function App(): JSX.Element {
                 <Button type='submit' onClick={handleSubmit}>Submit</Button>
               </div>
             </div>
-
-            <ModalContainer isOpen={isContentModalOpen} onClose={closeContentModal}>
-
-            </ModalContainer>
-
           </ModalContainer>
       <div>
+        <TaskNameList taskNames={TaskArray}/>
         <TaskList Tasks={TaskArray} />
 
       </div>

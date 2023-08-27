@@ -10,6 +10,7 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
 
   return (
     <>
+    <h2>タスク詳細</h2>
     {Tasks.map((task, index) => (
       <div key={index}>
         <Card

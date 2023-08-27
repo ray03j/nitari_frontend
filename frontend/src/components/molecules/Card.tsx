@@ -6,7 +6,7 @@ import "./Card.css";
 export type CardProps = {
   title: string;
   startDate: string;
-  limitDate: string; // 08/24/2023 21:19:49 yyyy-mm-dd
+  limitDate: string;  
 };
 
 export const Card: React.FC<CardProps> = ({ title, startDate, limitDate = 'text' }) => {
