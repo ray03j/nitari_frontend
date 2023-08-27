@@ -192,6 +192,7 @@ function App(): JSX.Element {
   }
 
   const handleSubmit = () => {
+    closeFormModal()
     publishIdToken()
     getCurrentDateTime()
     convertDateToISOString()
