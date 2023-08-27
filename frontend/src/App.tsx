@@ -15,6 +15,7 @@ import { Label } from './components/atoms/Label';
 import { ModalContainer } from './components/molecules/ModalContainer';
 import { TaskList } from './components/organisms/TaskList';
 import Slideshow from './components/molecules/Slideshow';
+import { set } from 'date-fns';
 
 export type InputValueProps = {
   title: string;
@@ -62,7 +63,6 @@ function App(): JSX.Element {
 
   const handleLoggedIn = async () =>{
     const idToken = await liff.getIDToken();
-    alert('ID Token '+ idToken)
 
     const newAccessInputText = {
       ...inputText,
@@ -143,20 +143,30 @@ function App(): JSX.Element {
       
       const newSettingDateInputText = {
         ...inputText,
-        newStartDate,
-        newLimitDate
+        startDate: newStartDate,
+        limitDate: newLimitDate
       }
-
+      
       setInputText(newSettingDateInputText);
     } catch(error) {
       alert("An error occurred"+ error)
     }
   } 
   
+  const publishIdToken = async() => {
+    const idToken = await liff.getIDToken();
+    const newIdTokenInputText = {
+      ...inputText,
+      accessToken: idToken
+    }
+    setInputText(newIdTokenInputText)
+  }
 
   const handleSubmit = () => {
     getCurrentDateTime()
     convertDateToISOString()
+    publishIdToken()
+
     try{
       axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
         .then(res => {
