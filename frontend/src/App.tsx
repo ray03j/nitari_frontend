@@ -30,7 +30,8 @@ export type DescriptionProps = {
 
 
 function App(): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isContentModalOpen, setIsContentModalOpen] = useState(false);
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
     title: "",
@@ -93,12 +94,18 @@ function App(): JSX.Element {
 
 
 
-  const openModal = () => {
-    setIsModalOpen(true)
+  const openFormModal = () => {
+    setIsFormModalOpen(true)
+  }
+  const closeFormModal = () => {
+    setIsFormModalOpen(false)
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false)
+  const openContentModal = () => {
+    setIsContentModalOpen(true)
+  }
+  const closeContentModal = () => {
+    setIsContentModalOpen(false)
   }
 
   const handleInputChange = (input: keyof DescriptionProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,39 +203,43 @@ function App(): JSX.Element {
         <div>
           <img className="NabeImg" src={nabe} alt="nabe" />
         </div>
-          <Button className = "" onClick={openModal}>追加</Button>
+          <Button className = "" onClick={openFormModal}>追加</Button>
           
-          <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
-          <div className="modal-flex">  
-            <div className='form-flex'>
-              <Label>たすく</Label>
-              <Input type="string" value={inputText.title} onChange={handleInputChange('title')} />
-              <br/>
+          <ModalContainer isOpen={isFormModalOpen} onClose={closeFormModal}>
+            <div onClick={openContentModal} className="modal-flex">  
+              <div className='form-flex'>
+                <Label>たすく</Label>
+                <Input type="string" value={inputText.title} onChange={handleInputChange('title')} />
+                <br/>
+              </div>
+
+              <div className='form-flex'>
+                <Label>たすくのせつめい</Label>
+                <Input type="string" value={inputText.description} onChange={handleInputChange('description')} />
+                <br/>
+              </div>
+
+              <div className='form-flex'>
+                <Label>煮込みはじめ日</Label>
+              
+                <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
+                <Label>(例: 2023/9/20,12:10)</Label>
+                <br/>
+              </div>
+
+              <div className='form-flex'>
+                <Label>煮込みすぎ日</Label>
+                <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
+                <Label>(例: 2023/9/22,21:10)</Label>
+              </div>
+              <div>
+                <Button type='submit' onClick={handleSubmit}>Submit</Button>
+              </div>
             </div>
 
-            <div className='form-flex'>
-              <Label>たすくのせつめい</Label>
-              <Input type="string" value={inputText.description} onChange={handleInputChange('description')} />
-              <br/>
-            </div>
+            <ModalContainer isOpen={isContentModalOpen} onClose={closeContentModal}>
 
-            <div className='form-flex'>
-              <Label>煮込みはじめ日</Label>
-            
-              <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
-              <Label>(例: 2023/9/20,12:10)</Label>
-              <br/>
-            </div>
-
-            <div className='form-flex'>
-              <Label>煮込みすぎ日</Label>
-              <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
-              <Label>(例: 2023/9/22,21:10)</Label>
-            </div>
-            <div>
-              <Button type='submit' onClick={handleSubmit}>Submit</Button>
-            </div>
-          </div>
+            </ModalContainer>
 
           </ModalContainer>
       <div>
