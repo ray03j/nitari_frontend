@@ -157,6 +157,11 @@ function App(): JSX.Element {
   const handleSubmit = () => {
     getCurrentDateTime()
     convertDateToISOString()
+
+    if(!inputText.title || !inputText.startDate || !inputText.limitDate){
+      alert('必須項目を入力してください')
+    }
+    
     try{
       axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
         .then(res => {
