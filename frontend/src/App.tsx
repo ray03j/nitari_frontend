@@ -56,13 +56,13 @@ function App(): JSX.Element {
         }
       })
       .catch((error) => {
-        console.error('LIFF initialization failed:', error);
+        alert('LIFF initialization failed:'+ error);
       })
   },[])
 
   const handleLoggedIn = async () =>{
     const idToken = await liff.getIDToken();
-    console.log('ID Token', idToken)
+    alert('ID Token '+ idToken)
 
     const newAccessInputText = {
       ...inputText,
@@ -114,6 +114,7 @@ function App(): JSX.Element {
   const getCurrentDateTime = () =>{
     const date = new Date()
     const formattedDate = date.toISOString();
+    console.log(formattedDate)
     const newCreatedAtInputText = {
       ...inputText,
       createdAt: formattedDate 
@@ -136,7 +137,7 @@ function App(): JSX.Element {
         console.log(convertedDate)
         return convertedDate.toISOString();
       } catch (error) {
-        console.error("Date conversion error:", error)
+        alert("Date conversion error:"+ error)
         return null
       }
     } else {
@@ -150,7 +151,7 @@ function App(): JSX.Element {
       const newLimitDate = convertToISOString(inputText.limitDate)
       
       if(newStartDate === null || newLimitDate === null){
-        console.error("Date conversion failed for at least one date.")
+        alert("Date conversion failed for at least one date.")
       }
       
       const newSettingDateInputText = {
@@ -161,7 +162,7 @@ function App(): JSX.Element {
 
       setInputText(newSettingDateInputText);
     } catch(error) {
-      console.error("An error occurred", error)
+      alert("An error occurred"+ error)
     }
   } 
   

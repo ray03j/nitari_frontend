@@ -21,7 +21,7 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
         const res = await axios.get('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme/Id={id}')
         setIdTask(res.data)
       } catch (error) {
-        console.error('An GetIdTask error occurred', error)
+        alert('An GetIdTask error occurred'+ error)
       }
     }
 
