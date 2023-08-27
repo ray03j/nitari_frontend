@@ -35,6 +35,7 @@ export type DescriptionProps = {
 
 function App(): JSX.Element {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
     title: "",
@@ -103,7 +104,6 @@ function App(): JSX.Element {
   const closeFormModal = () => {
     setIsFormModalOpen(false)
   }
-
 
   const handleInputChange = (input: keyof DescriptionProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText({
@@ -233,7 +233,6 @@ function App(): JSX.Element {
                 <Button type='submit' onClick={handleSubmit}>Submit</Button>
               </div>
             </div>
-
           </ModalContainer>
       <div>
         <TaskNameList taskNames={TaskArray}/>

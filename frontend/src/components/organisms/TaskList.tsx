@@ -3,7 +3,7 @@ import { Card, CardProps } from "../molecules/Card";
 import { ModalContainer } from "../molecules/ModalContainer";
 import {  TaskDetailInfo } from "./TaskDetailInfo";
 import axios from "axios";
-import { TaskDetailInfoProps } from "../../types/type";
+import { GetTaskProps, TaskDetailInfoProps } from "../../types/type";
 
 type TaskListProps = {
   Tasks: CardProps[];
@@ -13,7 +13,7 @@ type TaskListProps = {
 
 export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
   const [isContentModalOpen, setIsContentModalOpen] = useState(false);
-  const [idTask, setIdTask] = useState<TaskDetailInfoProps>()
+  const [idTask, setIdTask] = useState<GetTaskProps>()
 
   useEffect(() => {
     const getIdTasks = async () => {

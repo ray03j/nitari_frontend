@@ -16,16 +16,16 @@ export type InputValueProps = {
 };
 
 export type GetTaskProps = {
-  id: string,
-  title: string;
-  description: string;
-  startDate: string;
-  limitDate: string; 
-  createdAt: string;
-  isDone: boolean;
-  doneDate: string;
-  score: number;
-  userId: string;
+  id?: string;
+  title?: string;
+  description?: string;
+  startDate?: string;
+  limitDate?: string; 
+  createdAt?: string;
+  isDone?: boolean;
+  doneDate?: string;
+  score?: number;
+  userId?: string;
 };
 
 export type TaskDetailInfoProps = {
