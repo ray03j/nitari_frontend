@@ -117,7 +117,7 @@ function App(): JSX.Element {
     console.log(formattedDate)
     const newCreatedAtInputText = {
       ...inputText,
-      createdAt: formattedDate 
+      createdAt: formattedDate
     }
     setInputText(newCreatedAtInputText)
   }
@@ -170,8 +170,18 @@ function App(): JSX.Element {
   const handleSubmit = () => {
     getCurrentDateTime()
     convertDateToISOString()
-
-    axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
+    try{
+      axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
+        .then(res => {
+          alert('Success:'+ res.data);
+        })
+        .catch(error =>{
+          alert(error)
+          alert('An error occurred: ' + error.message);
+        })
+    } catch(error) {
+      alert(error)
+    }
     // if(inputText.accessToken)
     //   localStorage.setItem("submitInfo",inputText.accessToken)
     // localStorage.setItem("submitInfo",inputText.title)
