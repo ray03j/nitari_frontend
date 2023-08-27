@@ -1,0 +1,13 @@
+.taskinfo{
+    margin: auto;
+    overflow-x: scroll;
+}
+
+.nowrap-contents{
+    white-space: nowrap;
+}
+
+.finished-task{
+    color:crimson;
+    font-weight: bold;
+}
