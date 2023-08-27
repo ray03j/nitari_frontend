@@ -122,33 +122,20 @@ function App(): JSX.Element {
     setInputText(newCreatedAtInputText)
   }
 
-  const convertToISOString = (input: string):string | null => {
-    const dateRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2}),(\d{1,2}):(\d{1,2})$/;
-    const match = input.match(dateRegex);
-
-    if (match) {
-      const year = parseInt(match[1]);
-      const month = parseInt(match[2]) - 1; // JavaScriptのDateでは0から11で月を表現
-      const day = parseInt(match[3]);
-      const hour = parseInt(match[4]);
-      const minute = parseInt(match[5]);
-      try {
-        const convertedDate = new Date(year, month, day, hour, minute, 0);
-        console.log(convertedDate)
-        return convertedDate.toISOString();
-      } catch (error) {
-        alert("Date conversion error:"+ error)
-        return null
-      }
-    } else {
-      return null;
-    }
-  }
-
+  const convertToISOFormat = (formattedDate: string): string => {
+    const [datePart, timePart] = formattedDate.split(",");
+    const [year, month, day] = datePart.split("/");
+  
+    const [hours, minutes] = timePart.split(":");
+    const isoDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000000`;
+  
+    return isoDate;
+  };
+  
   const convertDateToISOString = () => {
     try{
-      const newStartDate = convertToISOString(inputText.startDate)
-      const newLimitDate = convertToISOString(inputText.limitDate)
+      const newStartDate = convertToISOFormat(inputText.startDate)
+      const newLimitDate = convertToISOFormat(inputText.limitDate)
       
       if(newStartDate === null || newLimitDate === null){
         alert("Date conversion failed for at least one date.")
