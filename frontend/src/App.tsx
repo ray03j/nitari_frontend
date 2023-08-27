@@ -56,13 +56,13 @@ function App(): JSX.Element {
         }
       })
       .catch((error) => {
-        alert('LIFF initialization failed:', error);
+        alert('LIFF initialization failed:'+ error);
       })
   },[])
 
   const handleLoggedIn = async () =>{
     const idToken = await liff.getIDToken();
-    console.log('ID Token', idToken)
+    alert('ID Token '+ idToken)
 
     const newAccessInputText = {
       ...inputText,
