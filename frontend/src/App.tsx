@@ -56,13 +56,13 @@ function App(): JSX.Element {
         }
       })
       .catch((error) => {
-        alert('LIFF initialization failed:'+ error);
+        console.error('LIFF initialization failed:', error);
       })
   },[])
 
   const handleLoggedIn = async () =>{
     const idToken = await liff.getIDToken();
-    alert('ID Token '+ idToken)
+    console.log('ID Token', idToken)
 
     const newAccessInputText = {
       ...inputText,
@@ -114,31 +114,43 @@ function App(): JSX.Element {
   const getCurrentDateTime = () =>{
     const date = new Date()
     const formattedDate = date.toISOString();
-    console.log(formattedDate)
     const newCreatedAtInputText = {
       ...inputText,
-      createdAt: formattedDate
+      createdAt: formattedDate 
     }
     setInputText(newCreatedAtInputText)
   }
 
-  const convertToISOFormat = (formattedDate: string): string => {
-    const [datePart, timePart] = formattedDate.split(",");
-    const [year, month, day] = datePart.split("/");
-  
-    const [hours, minutes] = timePart.split(":");
-    const isoDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000000`;
-  
-    return isoDate;
-  };
-  
+  const convertToISOString = (input: string):string | null => {
+    const dateRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2}),(\d{1,2}):(\d{1,2})$/;
+    const match = input.match(dateRegex);
+
+    if (match) {
+      const year = parseInt(match[1]);
+      const month = parseInt(match[2]) - 1; // JavaScriptのDateでは0から11で月を表現
+      const day = parseInt(match[3]);
+      const hour = parseInt(match[4]);
+      const minute = parseInt(match[5]);
+      try {
+        const convertedDate = new Date(year, month, day, hour, minute, 0);
+        console.log(convertedDate)
+        return convertedDate.toISOString();
+      } catch (error) {
+        console.error("Date conversion error:", error)
+        return null
+      }
+    } else {
+      return null;
+    }
+  }
+
   const convertDateToISOString = () => {
     try{
-      const newStartDate = convertToISOFormat(inputText.startDate)
-      const newLimitDate = convertToISOFormat(inputText.limitDate)
+      const newStartDate = convertToISOString(inputText.startDate)
+      const newLimitDate = convertToISOString(inputText.limitDate)
       
       if(newStartDate === null || newLimitDate === null){
-        alert("Date conversion failed for at least one date.")
+        console.error("Date conversion failed for at least one date.")
       }
       
       const newSettingDateInputText = {
@@ -149,7 +161,7 @@ function App(): JSX.Element {
 
       setInputText(newSettingDateInputText);
     } catch(error) {
-      alert("An error occurred"+ error)
+      console.error("An error occurred", error)
     }
   } 
   
@@ -158,22 +170,7 @@ function App(): JSX.Element {
     getCurrentDateTime()
     convertDateToISOString()
 
-    if(!inputText.title || !inputText.startDate || !inputText.limitDate){
-      alert('必須項目を入力してください')
-    }
-    
-    try{
-      axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
-        .then(res => {
-          alert('Success:'+ res.data);
-        })
-        .catch(error =>{
-          alert(error)
-          alert('An error occurred: ' + error.message);
-        })
-    } catch(error) {
-      alert(error)
-    }
+    axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
     // if(inputText.accessToken)
     //   localStorage.setItem("submitInfo",inputText.accessToken)
     // localStorage.setItem("submitInfo",inputText.title)
