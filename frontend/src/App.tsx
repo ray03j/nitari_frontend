@@ -140,7 +140,7 @@ function App(): JSX.Element {
       ...inputText,
       createdAt: formattedDateTime,
     }
-    alert(newCreatedAtInputText.createdAt)
+    console.log(newCreatedAtInputText.createdAt)
     
     setInputText(newCreatedAtInputText)
   }

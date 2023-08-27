@@ -1,5 +1,5 @@
 export type DescriptionProps = {
-  accessToken: string | null;
+  accessToken: string;
   title: string;
   description: string;
   startDate: string;
