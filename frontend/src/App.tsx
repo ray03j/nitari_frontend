@@ -123,15 +123,23 @@ function App(): JSX.Element {
     })
   }
 
-  const getCurrentDateTime = () =>{
-    const date = new Date()
-    const formattedDate = date.toISOString();
+  const getCurrentDateTime = () => {
+    const now = new Date();
+  
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const milliseconds = String(now.getMilliseconds()).padStart(6, "0");
+  
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+    
     const newCreatedAtInputText = {
       ...inputText,
-      createdAt: formattedDate
+      createdAt: formattedDateTime,
     }
-
-    console.log(newCreatedAtInputText.createdAt)
     alert(newCreatedAtInputText.createdAt)
     
     setInputText(newCreatedAtInputText)
@@ -143,7 +151,7 @@ function App(): JSX.Element {
     const [hours, minutes] = timePart.split(":");
 
     const isoDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000000`;
-    const regex = /^(?:\d{4}\/\d{2}\/\d{2},\d{2}:\d{2})$/
+    const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/
     if(regex.test(isoDate)) return isoDate;
     else {
       alert("Not matched\n")
