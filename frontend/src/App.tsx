@@ -35,7 +35,7 @@ export type DescriptionProps = {
 
 function App(): JSX.Element {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-  const [isContentModalOpen, setIsContentModalOpen] = useState(false);
+
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
     title: "",
@@ -103,13 +103,6 @@ function App(): JSX.Element {
   }
   const closeFormModal = () => {
     setIsFormModalOpen(false)
-  }
-
-  const openContentModal = () => {
-    setIsContentModalOpen(true)
-  }
-  const closeContentModal = () => {
-    setIsContentModalOpen(false)
   }
 
   const handleInputChange = (input: keyof DescriptionProps) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,7 +203,7 @@ function App(): JSX.Element {
           <Button className = "" onClick={openFormModal}>追加</Button>
           
           <ModalContainer isOpen={isFormModalOpen} onClose={closeFormModal}>
-            <div onClick={openContentModal} className="modal-flex">  
+            <div className="modal-flex">  
               <div className='form-flex'>
                 <Label>たすく</Label>
                 <Input type="string" value={inputText.title} onChange={handleInputChange('title')} />

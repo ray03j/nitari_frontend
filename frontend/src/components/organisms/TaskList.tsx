@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardProps } from "../molecules/Card";
+import { ModalContainer } from "../molecules/ModalContainer";
+import {  TaskDetailInfo } from "./TaskDetailInfo";
+import axios from "axios";
+import { GetTaskProps, TaskDetailInfoProps } from "../../types/type";
 
 type TaskListProps = {
   Tasks: CardProps[];
 };
 
-export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
 
+
+export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
+  const [isContentModalOpen, setIsContentModalOpen] = useState(false);
+  const [idTask, setIdTask] = useState<GetTaskProps>()
+
+  useEffect(() => {
+    const getIdTasks = async () => {
+      try {
+        const res = await axios.get('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme/Id={id}')
+        setIdTask(res.data)
+      } catch (error) {
+        console.error('An GetIdTask error occurred', error)
+      }
+    }
+
+    getIdTasks()
+
+
+  },[])
+
+  const openContentModal = () => {
+    setIsContentModalOpen(true)
+  }
+  const closeContentModal = () => {
+    setIsContentModalOpen(false)
+  }
 
   return (
     <>
@@ -14,10 +43,14 @@ export const TaskList: React.FC<TaskListProps> = ({Tasks}) => {
     {Tasks.map((task, index) => (
       <div key={index}>
         <Card
+          onClick={openContentModal}
           title={task.title}
           startDate={task.startDate}
           limitDate={task.limitDate}
           />
+        <ModalContainer isOpen={isContentModalOpen} onClose={closeContentModal}>
+          <TaskDetailInfo {...idTask} />
+        </ModalContainer>
       </div>
     ))}
     </>

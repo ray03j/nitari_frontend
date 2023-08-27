@@ -4,6 +4,7 @@ import { TaskText } from "../atoms/TaskText";
 import "./Card.css";
 
 export type CardProps = {
+  onClick?: () => void;
   title: string;
   startDate: string;
   limitDate: string;  
