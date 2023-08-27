@@ -39,3 +39,13 @@ export type Finished10TasksProps = {
 export type NotFinished10TasksProps = {
   NotFinishedTasks: GetTaskProps[]
 }
+
+export type SuccessResDataObjectType<T> = {
+  data: T
+  error: null
+}
+
+export type FailedResErrorObjectType = {
+  data: null
+  error: Error
+}

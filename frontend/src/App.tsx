@@ -15,6 +15,8 @@ import { Label } from './components/atoms/Label';
 import { ModalContainer } from './components/molecules/ModalContainer';
 import { TaskList } from './components/organisms/TaskList';
 import Slideshow from './components/molecules/Slideshow';
+import { set } from 'date-fns';
+import { GetTaskProps } from './types/type';
 
 export type InputValueProps = {
   title: string;
@@ -35,6 +37,7 @@ export type DescriptionProps = {
 
 function App(): JSX.Element {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [notFinishTask, setNotFinishTask] = useState<GetTaskProps[]>([])
 
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
@@ -45,6 +48,19 @@ function App(): JSX.Element {
     createdAt: ""
   })
 
+  const handleLoggedIn = async () =>{
+    const idToken = await liff.getIDToken();
+
+    const newAccessInputText = {
+      ...inputText,
+      accessToken: idToken
+    }
+    setInputText(newAccessInputText)
+  }
+
+  const handleNotLoggedIn = async () =>{
+    console.log("not logged in")
+  }
 
   useEffect(() => {
     liff.init({liffId: '2000520603-Nnz176bY'})
@@ -58,22 +74,19 @@ function App(): JSX.Element {
       .catch((error) => {
         console.error('LIFF initialization failed:', error);
       })
+    
+      const getNotFinish10Tasks = async () => {
+        const AccessToken = inputText.accessToken
+        try {
+          const res = await axios.get('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme/NotDone/AT='+{AccessToken}+',index={0}')
+          setNotFinishTask(res.data)
+        } catch (error) {
+          console.error('GetNotFinishTasks error occurred', error)
+        }
+      }
+
   },[])
 
-  const handleLoggedIn = async () =>{
-    const idToken = await liff.getIDToken();
-    console.log('ID Token', idToken)
-
-    const newAccessInputText = {
-      ...inputText,
-      accessToken: idToken
-    }
-    setInputText(newAccessInputText)
-  }
-
-  const handleNotLoggedIn = async () =>{
-    console.log("not logged in")
-  }
 
   const TaskArray: InputValueProps[] = [
     {
@@ -96,8 +109,6 @@ function App(): JSX.Element {
     }
   ]
 
-
-
   const openFormModal = () => {
     setIsFormModalOpen(true)
   }
@@ -111,66 +122,100 @@ function App(): JSX.Element {
     })
   }
 
-  const getCurrentDateTime = () =>{
-    const date = new Date()
-    const formattedDate = date.toISOString();
+
+  const getCurrentDateTime = () => {
+    const now = new Date();
+  
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const milliseconds = String(now.getMilliseconds()).padStart(6, "0");
+  
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+    
     const newCreatedAtInputText = {
       ...inputText,
-      createdAt: formattedDate 
+      createdAt: formattedDateTime,
     }
+    alert(newCreatedAtInputText.createdAt)
+    
     setInputText(newCreatedAtInputText)
   }
 
-  const convertToISOString = (input: string):string | null => {
-    const dateRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2}),(\d{1,2}):(\d{1,2})$/;
-    const match = input.match(dateRegex);
 
-    if (match) {
-      const year = parseInt(match[1]);
-      const month = parseInt(match[2]) - 1; // JavaScriptのDateでは0から11で月を表現
-      const day = parseInt(match[3]);
-      const hour = parseInt(match[4]);
-      const minute = parseInt(match[5]);
-      try {
-        const convertedDate = new Date(year, month, day, hour, minute, 0);
-        console.log(convertedDate)
-        return convertedDate.toISOString();
-      } catch (error) {
-        console.error("Date conversion error:", error)
-        return null
-      }
-    } else {
-      return null;
+  const convertToISOFormat = (formattedDate: string): string => {
+    const [datePart, timePart] = formattedDate.split(",");
+    const [year, month, day] = datePart.split("/");
+    const [hours, minutes] = timePart.split(":");
+
+    const isoDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000000`;
+    const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/
+    if(regex.test(isoDate)) return isoDate;
+    else {
+      alert("Not matched\n")
+      return ""
     }
-  }
-
+  };
+  
   const convertDateToISOString = () => {
     try{
-      const newStartDate = convertToISOString(inputText.startDate)
-      const newLimitDate = convertToISOString(inputText.limitDate)
+      const newStartDate = convertToISOFormat(inputText.startDate)
+      const newLimitDate = convertToISOFormat(inputText.limitDate)
       
-      if(newStartDate === null || newLimitDate === null){
-        console.error("Date conversion failed for at least one date.")
+
+      if(newStartDate === "" || newLimitDate === ""){
+        alert("Date conversion failed for at least one date.")
+        return
       }
       
       const newSettingDateInputText = {
         ...inputText,
-        newStartDate,
-        newLimitDate
+        startDate: newStartDate,
+        limitDate: newLimitDate
       }
-
+      console.log(newSettingDateInputText)
       setInputText(newSettingDateInputText);
     } catch(error) {
-      console.error("An error occurred", error)
+
+      alert("error: "+ error)
+
     }
   } 
   
+  const publishIdToken = async() => {
+    const idToken = await liff.getIDToken();
+    const newIdTokenInputText = {
+      ...inputText,
+      accessToken: idToken
+    }
+    if(!newIdTokenInputText.accessToken) alert("access token is null") 
+    setInputText(newIdTokenInputText)
+  }
 
   const handleSubmit = () => {
+    closeFormModal()
+    publishIdToken()
     getCurrentDateTime()
     convertDateToISOString()
 
-    axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
+
+    try{
+      if(!inputText.accessToken) console.log("access token is null")
+      axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme',inputText)
+        .then(res => {
+          console.log('Success:'+ res.status);
+        })
+        .catch((error) =>{
+          alert(error)
+          alert('An error occurred: ' + error.message);
+        })
+    } catch(error) {
+      alert(error)
+    }
+
     // if(inputText.accessToken)
     //   localStorage.setItem("submitInfo",inputText.accessToken)
     // localStorage.setItem("submitInfo",inputText.title)
@@ -220,14 +265,14 @@ function App(): JSX.Element {
                 <Label>煮込みはじめ日</Label>
               
                 <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
-                <Label>(例: 2023/9/20,12:10)</Label>
+                <Label>(例: 2023/09/20,12:10)</Label>
                 <br/>
               </div>
 
               <div className='form-flex'>
                 <Label>煮込みすぎ日</Label>
                 <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
-                <Label>(例: 2023/9/22,21:10)</Label>
+                <Label>(例: 2023/09/22,21:10)</Label>
               </div>
               <div>
                 <Button type='submit' onClick={handleSubmit}>Submit</Button>
