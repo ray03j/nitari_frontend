@@ -16,6 +16,7 @@ import { ModalContainer } from './components/molecules/ModalContainer';
 import { TaskList } from './components/organisms/TaskList';
 import Slideshow from './components/molecules/Slideshow';
 import { set } from 'date-fns';
+import { GetTaskProps } from './types/type';
 
 export type InputValueProps = {
   title: string;
@@ -36,6 +37,7 @@ export type DescriptionProps = {
 
 function App(): JSX.Element {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [notFinishTask, setNotFinishTask] = useState<GetTaskProps[]>([])
 
   const [inputText, setInputText] = useState<DescriptionProps>({
     accessToken: "",
@@ -45,21 +47,6 @@ function App(): JSX.Element {
     limitDate: "",
     createdAt: ""
   })
-
-
-  useEffect(() => {
-    liff.init({liffId: '2000520603-Nnz176bY'})
-      .then(() =>{
-        if (liff.isLoggedIn()){
-          handleLoggedIn()
-        } else {
-          handleNotLoggedIn()
-        }
-      })
-      .catch((error) => {
-        alert('LIFF initialization failed:'+ error);
-      })
-  },[])
 
   const handleLoggedIn = async () =>{
     const idToken = await liff.getIDToken();
@@ -74,6 +61,33 @@ function App(): JSX.Element {
   const handleNotLoggedIn = async () =>{
     console.log("not logged in")
   }
+
+  useEffect(() => {
+    liff.init({liffId: '2000520603-Nnz176bY'})
+      .then(() =>{
+        if (liff.isLoggedIn()){
+          handleLoggedIn()
+        } else {
+          handleNotLoggedIn()
+        }
+      })
+      .catch((error) => {
+        alert('LIFF initialization failed:'+ error);
+      })
+    
+      const getNotFinish10Tasks = async () => {
+        const AccessToken = inputText.accessToken
+        try {
+          const res = await axios.get('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme/NotDone/AT='+{AccessToken}+',index={0}')
+          setNotFinishTask(res.data)
+        } catch (error) {
+          console.error('GetNotFinishTasks error occurred', error)
+        }
+      }
+
+  },[])
+
+
 
   const TaskArray: InputValueProps[] = [
     {
@@ -96,8 +110,6 @@ function App(): JSX.Element {
     }
   ]
 
-
-
   const openFormModal = () => {
     setIsFormModalOpen(true)
   }
@@ -114,22 +126,29 @@ function App(): JSX.Element {
   const getCurrentDateTime = () =>{
     const date = new Date()
     const formattedDate = date.toISOString();
-    console.log(formattedDate)
     const newCreatedAtInputText = {
       ...inputText,
       createdAt: formattedDate
     }
+
+    console.log(newCreatedAtInputText.createdAt)
+    alert(newCreatedAtInputText.createdAt)
+    
     setInputText(newCreatedAtInputText)
   }
 
   const convertToISOFormat = (formattedDate: string): string => {
     const [datePart, timePart] = formattedDate.split(",");
     const [year, month, day] = datePart.split("/");
-  
     const [hours, minutes] = timePart.split(":");
+
     const isoDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000000`;
-  
-    return isoDate;
+    const regex = /^(?:\d{4}\/\d{2}\/\d{2},\d{2}:\d{2})$/
+    if(regex.test(isoDate)) return isoDate;
+    else {
+      alert("Not matched\n")
+      return ""
+    }
   };
   
   const convertDateToISOString = () => {
@@ -137,8 +156,9 @@ function App(): JSX.Element {
       const newStartDate = convertToISOFormat(inputText.startDate)
       const newLimitDate = convertToISOFormat(inputText.limitDate)
       
-      if(newStartDate === null || newLimitDate === null){
+      if(newStartDate === "" || newLimitDate === ""){
         alert("Date conversion failed for at least one date.")
+        return
       }
       
       const newSettingDateInputText = {
@@ -146,10 +166,10 @@ function App(): JSX.Element {
         startDate: newStartDate,
         limitDate: newLimitDate
       }
-      
+      console.log(newSettingDateInputText)
       setInputText(newSettingDateInputText);
     } catch(error) {
-      alert("An error occurred"+ error)
+      alert("error: "+ error)
     }
   } 
   
@@ -159,20 +179,22 @@ function App(): JSX.Element {
       ...inputText,
       accessToken: idToken
     }
+    if(!newIdTokenInputText.accessToken) alert("access token is null") 
     setInputText(newIdTokenInputText)
   }
 
   const handleSubmit = () => {
+    publishIdToken()
     getCurrentDateTime()
     convertDateToISOString()
-    publishIdToken()
 
     try{
-      axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme', inputText)
+      if(!inputText.accessToken) console.log("access token is null")
+      axios.post('https://nitaricupbackendserver.azurewebsites.net/api/TaskScheme',inputText)
         .then(res => {
-          alert('Success:'+ res.data);
+          console.log('Success:'+ res.status);
         })
-        .catch(error =>{
+        .catch((error) =>{
           alert(error)
           alert('An error occurred: ' + error.message);
         })
@@ -228,14 +250,14 @@ function App(): JSX.Element {
                 <Label>煮込みはじめ日</Label>
               
                 <Input type="string" value={inputText.startDate} onChange={handleInputChange('startDate')} />
-                <Label>(例: 2023/9/20,12:10)</Label>
+                <Label>(例: 2023/09/20,12:10)</Label>
                 <br/>
               </div>
 
               <div className='form-flex'>
                 <Label>煮込みすぎ日</Label>
                 <Input type="string" value={inputText.limitDate} onChange={handleInputChange('limitDate')} />
-                <Label>(例: 2023/9/22,21:10)</Label>
+                <Label>(例: 2023/09/22,21:10)</Label>
               </div>
               <div>
                 <Button type='submit' onClick={handleSubmit}>Submit</Button>
